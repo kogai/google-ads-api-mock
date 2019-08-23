@@ -4,15 +4,17 @@ import (
 	"context"
 	"log"
 	"net"
+	"os"
 
 	"google.golang.org/genproto/googleapis/ads/googleads/v1/services"
 	"google.golang.org/grpc"
 )
 
 const (
-	port = ":50051"
+	defaultPort = ":50051"
 )
 
+// server is used to implement helloworld.GreeterServer.
 type server struct{}
 
 func (s *server) Search(ctx context.Context, in *services.SearchGoogleAdsRequest) (*services.SearchGoogleAdsResponse, error) {
@@ -26,6 +28,10 @@ func (s *server) Mutate(ctx context.Context, in *services.MutateGoogleAdsRequest
 }
 
 func main() {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = defaultPort
+	}
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
