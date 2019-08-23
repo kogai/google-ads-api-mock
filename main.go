@@ -14,7 +14,6 @@ const (
 	defaultPort = ":50051"
 )
 
-// server is used to implement helloworld.GreeterServer.
 type server struct{}
 
 func (s *server) Search(ctx context.Context, in *services.SearchGoogleAdsRequest) (*services.SearchGoogleAdsResponse, error) {
@@ -31,6 +30,8 @@ func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort
+	} else {
+		port = ":" + port
 	}
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
